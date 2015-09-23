@@ -8,17 +8,21 @@
  int foodX=400;
  int foodY=400;
  int bacSize = 15;
-
+ PImage money;
+//boolean bAlive;
 
  void setup()   
  {     
+
  	background(40);
  	//initialize bacteria variables here
 
-
+money = loadImage("money bag.png");
+money.resize(50,50);
  	size(800,800);
 
  	clique = new Bacteria[250];
+
 
 	for(int i=0; i<clique.length; i++)
   {
@@ -32,19 +36,24 @@
  void draw()   
  {    
 
- 	background(40,50);
+	background(40,50);
+ 	
  	
 	for(int i=0; i<clique.length; i++)
 		{
+
     clique[i].move();
 
     clique[i].show();
+    clique[i].lookOut();
+
  		}  
 
 
  		//food
- 		fill(255,0,0);
- 		rect(foodX,foodY,20,20);
+ 		image(money,foodX,foodY);
+
+
 }
 
 
@@ -54,12 +63,18 @@
  	int myX, myY;
  	double cRandom = Math.random();
  	double bRandom = Math.random();
+ 	boolean bAlive;
+
 
  Bacteria()
  	{
  		myX = (int)(Math.random()*400)+200;
  		myY = (int)(Math.random()*400)+200;
+ 		
+ 	
+					bAlive=true;
  	}
+ 
 
 
 
@@ -75,12 +90,12 @@ void  move()
 
 
 
-if(myX<foodX)
+if(myX<foodX+25)
 	myX = ((int)(Math.random()*5) -1) + myX;
 else
 	myX = ((int)(Math.random()*5) -3) + myX;
 
-if(myY<foodY)
+if(myY<foodY+25)
 	myY = ((int)(Math.random()*5) -1) + myY;
 else
 	myY = ((int)(Math.random()*5) -3) + myY;
@@ -88,48 +103,60 @@ else
 
 
 // reset
-if(myX == foodX && myY==foodY)
-{
-
-		if(bRandom < .25)
-		{
-			myX = (int)(Math.random())-100;
-			myY = (int)(Math.random()*800);		
-		}
-			
-
-				else if(bRandom<.5)
+					
+				if(keyPressed == true)
 				{
+					bAlive=true;
+					if(bRandom < .25)
+					{
+					myX = (int)(Math.random())-100;
+					myY = (int)(Math.random()*800);		
+					}
+						
+
+					else if(bRandom<.5)
+							{
 					myX = (int)(Math.random())+900;
 					myY = (int)(Math.random()*800);		
-				}
-					
+							}
+								
 
 					else if(bRandom <.75)
+								{
+					myY = (int)(Math.random())-100;
+					myX = (int)(Math.random()*800);
+								}
+									
+					else 
 							{
-					 			myY = (int)(Math.random())-100;
-					 			myX = (int)(Math.random()*800);
-							}
-						
-						else 
-						{
-				 				myY = (int)(Math.random())+900;
-				 				myX = (int)(Math.random()*800);
-						}
-						
+							 	myY = (int)(Math.random())+900;
+							 	myX = (int)(Math.random()*800);
+								}
+									
 
 }
 }
 
+void lookOut()
+{
+	if(myX == foodX+25 && myY==foodY+25)
+{
+					bAlive=false;
+					textSize(50);
+					fill((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255));
+					text("Here Comes The Money",50,50);
+				}
+}
 
 
  void show()
  {
 
-
+	
 
 //color stuff
-
+if(bAlive == true)
+{
 if(cRandom < .25)
 	fill(purple);
 else if(cRandom<.5)
@@ -149,10 +176,20 @@ else
 }
 
 
-void mousePressed()
-{
-foodX= mouseX;
-foodY=mouseY;
 }
 
 
+void mousePressed()
+{
+foodX= mouseX-25;
+foodY=mouseY-25;
+}
+
+
+
+
+
+//if(myX == foodX+25 && myY==foodY+25)
+//{
+				//	bAlive=false;
+			//	}
