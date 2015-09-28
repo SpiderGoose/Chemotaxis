@@ -8,6 +8,8 @@
  int foodX=400;
  int foodY=400;
  int bacSize = 15;
+
+  /*preload="money bag.png"; */
  PImage money;
 //boolean bAlive;
 
